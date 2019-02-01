@@ -1,0 +1,4 @@
+#!/bin/sh
+
+sh /usr/custom/koolproxy.sh restart >/dev/null 2>&1 &
+exit 0
