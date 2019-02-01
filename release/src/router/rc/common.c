@@ -374,6 +374,13 @@ int _xstart(const char *cmd, ...)
 	return _eval(argv, NULL, 0, &pid);
 }
 
+void run_custom_script(char *script, char *args)
+{
+	if(f_exists(script)) {
+		xstart(script, args);
+	}
+}
+
 static int endswith(const char *str, char *cmp)
 {
 	int cmp_len, str_len, i;

@@ -1084,6 +1084,7 @@ extern void usage_exit(const char *cmd, const char *help) __attribute__ ((noretu
 extern int modprobe_r(const char *mod);
 #define xstart(args...)	_xstart(args, NULL)
 extern int _xstart(const char *cmd, ...);
+extern void run_custom_script(char *script, char *args);
 extern void run_nvscript(const char *nv, const char *arg1, int wtime);
 extern void run_userfile (char *folder, char *extension, const char *arg1, int wtime);
 extern void setup_conntrack(void);
