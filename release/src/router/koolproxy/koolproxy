@@ -12,13 +12,6 @@ kp_rule="http://kprules.b0.upaiyun.com/koolproxy.txt"
 kp_daily="http://kprules.b0.upaiyun.com/daily.txt"
 kp_video="http://kprules.b0.upaiyun.com/kp.dat"
 
-
-
-if [ $koolproxy_enable != "1" ];then
-    exit 0
-fi
-
-
 stop() {
     # 清除防火墙规则
     iptables -t nat -D PREROUTING -p tcp -j KOOLPROXY 2>/dev/null
@@ -71,26 +64,46 @@ restart() {
     start
 }
 
-check_rules() {
-    if [ $koolproxy_video_enable = "1" ];then
-        sed -i '1s/1/0/g;2s/1/0/g' /tmp/koolproxy/data/source.list
-    fi
-}
-
 prepare() {
+    mkdir /tmp/koolproxy
+    mkdir /tmp/koolproxy/data
+    mkdir /tmp/koolproxy/data/rules
+
     wget $kp_bin -o /tmp/koolproxy/koolproxy
     chmod +x /tmp/koolproxy/koolproxy
+
+    cat>/tmp/koolproxy/data/source.list<<EOF
+0|koolproxy.txt|https://kprule.com/koolproxy.txt|静态规则
+0|daily.txt|https://kprule.com/daily.txt|每日规则
+1|kp.dat|https://kprule.com/kp.dat|视频规则
+EOF
+
     wget $kp_video -o /tmp/koolproxy/data/rules/kp.dat
     if [ $koolproxy_video_enable != "1" ];then
+        sed -i '1s/0/1/g;2s/0/1/g' /tmp/koolproxy/data/source.list
         wget $kp_rule -o /tmp/koolproxy/data/rules/koolproxy.txt
         wget $kp_daily -o /tmp/koolproxy/data/rules/daily.txt
     fi
 }
 
-
-sleep 5
-tar zxf /usr/custom/koolproxy.tgz -C /tmp
-check_rules
-prepaer
-sleep 5
-restart
+case "$1" in
+start)
+    if [ $koolproxy_enable != "1" ];then
+        logger -t [koolproxy] "disabled"
+        exit 0
+    fi
+    if [ ! -d "/tmp/koolproxy" ];then
+        logger -t [koolproxy] "files not found, start download..."
+        prepare
+        logger -t [koolproxy] "download finished"
+    fi
+    sleep 5
+    start
+;;
+stop)
+    stop
+;;
+restart)
+    restart
+;;
+esac
