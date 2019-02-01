@@ -4053,20 +4053,20 @@ endif
 	@echo "Using $(N) profile, $(B) build config."
 	@echo ""
 
-	@cd $(LINUXDIR) ; \
-		rm -f config_current ; \
-		ln -s config_$(lowercase_B) config_current ; \
-		cp -f config_current .config
+	# @cd $(LINUXDIR) ; \
+	# 	rm -f config_current ; \
+	# 	ln -s config_$(lowercase_B) config_current ; \
+	# 	cp -f config_current .config
 
-	@cd $(BUSYBOX_DIR) && \
-		rm -f config_current ; \
-		ln -s config_$(lowercase_B) config_current ; \
-		cp config_current .config
+	# @cd $(BUSYBOX_DIR) && \
+	# 	rm -f config_current ; \
+	# 	ln -s config_$(lowercase_B) config_current ; \
+	# 	cp config_current .config
 
-	@cd router ; \
-		rm -f config_current ; \
-		ln -s config_$(lowercase_B) config_current ; \
-		cp config_current .config
+	# @cd router ; \
+	# 	rm -f config_current ; \
+	# 	ln -s config_$(lowercase_B) config_current ; \
+	# 	cp config_current .config
 
 	@if grep -q "CONFIG_RT3352_INIC_MII=m" $(LINUXDIR)/.config ; then \
 		sed -i "/RTCONFIG_WLMODULE_RT3352_INIC_MII/d" router/.config; \
