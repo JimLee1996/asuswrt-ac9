@@ -69,7 +69,7 @@ prepare() {
     mkdir /tmp/koolproxy/data
     mkdir /tmp/koolproxy/data/rules
 
-    wget $kp_bin -o /tmp/koolproxy/koolproxy
+    wget -o /tmp/koolproxy/koolproxy $kp_bin
     chmod +x /tmp/koolproxy/koolproxy
 
     cat>/tmp/koolproxy/data/source.list<<EOF
@@ -78,11 +78,11 @@ prepare() {
 1|kp.dat|https://kprule.com/kp.dat|视频规则
 EOF
 
-    wget $kp_video -o /tmp/koolproxy/data/rules/kp.dat
+    wget -o /tmp/koolproxy/data/rules/kp.dat $kp_video
     if [ "$koolproxy_video_enable" != "1" ];then
         sed -i '1s/0/1/g;2s/0/1/g' /tmp/koolproxy/data/source.list
-        wget $kp_rule -o /tmp/koolproxy/data/rules/koolproxy.txt
-        wget $kp_daily -o /tmp/koolproxy/data/rules/daily.txt
+        wget -o /tmp/koolproxy/data/rules/koolproxy.txt $kp_rule
+        wget -o /tmp/koolproxy/data/rules/daily.txt $kp_daily
     fi
 }
 
