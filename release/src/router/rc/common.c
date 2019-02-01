@@ -377,6 +377,10 @@ int _xstart(const char *cmd, ...)
 void run_custom_script(char *script, char *args)
 {
 	if(f_exists(script)) {
+		if(args)
+			logmessage("custom_script" ,"Running %s (args: %s)", script, args);
+		else
+			logmessage("custom_script" ,"Running %s", script);
 		xstart(script, args);
 	}
 }
