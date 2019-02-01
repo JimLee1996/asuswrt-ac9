@@ -68,50 +68,6 @@ define(function(){
 					{url: "Advanced_QOSUserRules_Content.asp", tabName: "__INHERIT__"},
 				] 
 			},
-			{
-				menuName: "<#Parental_Control#>",
-				index: "menu_ParentalControl", 
-				tab: [
-					{url: "ParentalControl.asp", tabName: "<#Parental_Control#>"},
-					{url: "YandexDNS.asp", tabName: "<#YandexDNS#>"},
-					{url: "NULL", tabName: "__INHERIT__"}
-				] 
-			},
-			{
-				menuName: "<#Game_Boost#>",
-				index: "menu_GameBoost", 
-				tab: [
-					{url: "GameBoost.asp", tabName: "<#Game_Boost#>"},
-					{url: "NULL", tabName: "__INHERIT__"}
-				] 
-			},
-			{
-				menuName: "<#Menu_usb_application#>",
-				index: "menu_APP", 
-				tab: [
-					{url: "APP_Installation.asp", tabName: "__HIDE__"},
-					{url: "aidisk.asp", tabName: "__INHERIT__"},
-					{url: "mediaserver.asp", tabName: "<#UPnPMediaServer#>"},
-					{url: "Advanced_AiDisk_samba.asp", tabName: "<#menu5_4_1#>".concat(WebDav_support?" / <#Cloud_Disk#>":"")},
-					{url: "Advanced_AiDisk_ftp.asp", tabName: "<#menu5_4_2#>"},
-					{url: "PrinterServer.asp", tabName: "__INHERIT__"},
-					{url: "Advanced_Modem_Content.asp", tabName: "__INHERIT__"},
-					{url: "Advanced_TimeMachine.asp", tabName: "__INHERIT__"},
-					{url: "NULL", tabName: "__INHERIT__"}
-				] 
-			},
-			{
-				menuName: "<#AiCloud_Title#>",
-				index: "menu_AiCloud", 
-				tab: [
-					{url: "cloud_main.asp", tabName: "AiCloud 2.0"},
-					{url: "cloud_sync.asp", tabName: "<#smart_sync#>"},
-					{url: "cloud_router_sync.asp", tabName: "<#Server_Sync#>"},
-					{url: "cloud_settings.asp", tabName: "<#Settings#>"},
-					{url: "cloud_syslog.asp", tabName: "<#Log#>"},
-					{url: "NULL", tabName: "__INHERIT__"}
-				] 
-			},
 			/* ============================================================================================================ */
 			{
 				menuName: "<#menu5#>",
@@ -173,18 +129,6 @@ define(function(){
 					{url: "NULL", tabName: "__INHERIT__"}
 				]
 			},
-			{
-				menuName: "VPN",
-				index: "menu_VPN", 
-				tab: [
-					{url: "Advanced_VPN_PPTP.asp", tabName: "<#BOP_isp_heart_item#>"},
-					{url: "Advanced_VPN_OpenVPN.asp", tabName: "__INHERIT__"},
-					{url: "Advanced_VPN_IPSec.asp", tabName: "__INHERIT__"},
-					{url: "Advanced_VPNClient_Content.asp", tabName: (vpn_fusion_support) ? "<#VPN_Fusion#>" : "<#vpnc_title#>"},
-					{url: "Advanced_TOR_Content.asp", tabName: "TOR"},
-					{url: "NULL", tabName: "__INHERIT__"}
-				]
-			},		
 			{
 				menuName: "<#menu5_5#>",
 				index: "menu_Firewall",
@@ -256,17 +200,8 @@ define(function(){
 				}
 
 				if(!bwdpi_support){
-					retArray.push("menu_AiProtection");
 					retArray.push("menu_TrafficAnalyzer");
 					retArray.push("menu_BandwidthMonitor");
-				}
-
-				if(!usb_support){
-					retArray.push("menu_APP");
-				}
-
-				if(!cloudsync_support && !aicloudipk_support){
-					retArray.push("menu_AiCloud");
 				}
 
 				if(!IPv6_support){
@@ -276,28 +211,18 @@ define(function(){
 				if(!networkTool_support){
 					retArray.push("menu_NekworkTool");
 				}
-				
-				if(!pptpd_support && !openvpnd_support && !vpnc_support){
-					retArray.push("menu_VPN");
-				}
 
 				if(!tagged_based_vlan){
 					retArray.push("menu_VLAN");
 				}
 
-				if(!wtfast_support) {
-					retArray.push("menu_GameBoost");
-				}
-
 				/* Operation Mode */
 				if(isSwMode("re")){
-					retArray.push("menu_ParentalControl");
 					retArray.push("menu_GuestNetwork");
 					retArray.push("menu_AccessControl");
 					retArray.push("menu_TrafficAnalyzer");
 					retArray.push("menu_QoS");
 					retArray.push("menu_BandwidthMonitor");
-					retArray.push("menu_AiProtection");
 					retArray.push("menu_WAN");
 					retArray.push("menu_IPv6");
 					retArray.push("menu_VPN");
@@ -309,12 +234,10 @@ define(function(){
 					}
 				}
 				else if(isSwMode("ap")){
-					retArray.push("menu_ParentalControl");
 					retArray.push("menu_AccessControl");
 					retArray.push("menu_TrafficAnalyzer");
 					retArray.push("menu_QoS");
 					retArray.push("menu_BandwidthMonitor");
-					retArray.push("menu_AiProtection");
 					retArray.push("menu_WAN");
 					retArray.push("menu_IPv6");
 					retArray.push("menu_VPN");
@@ -322,13 +245,11 @@ define(function(){
 					retArray.push("menu_Firewall");
 				}
 				else if(isSwMode("mb")){
-					retArray.push("menu_ParentalControl");
 					retArray.push("menu_GuestNetwork");
 					retArray.push("menu_AccessControl");
 					retArray.push("menu_TrafficAnalyzer");
 					retArray.push("menu_QoS");
 					retArray.push("menu_BandwidthMonitor");
-					retArray.push("menu_AiProtection");
 					retArray.push("menu_Wireless");
 					retArray.push("menu_WAN");
 					retArray.push("menu_IPv6");
@@ -337,13 +258,11 @@ define(function(){
 					retArray.push("menu_Firewall");
 				}
 				else if(isSwMode("ew")){
-					retArray.push("menu_ParentalControl");
 					retArray.push("menu_GuestNetwork");
 					retArray.push("menu_AccessControl");
 					retArray.push("menu_TrafficAnalyzer");
 					retArray.push("menu_QoS");
 					retArray.push("menu_BandwidthMonitor");
-					retArray.push("menu_AiProtection");
 					retArray.push("menu_WAN");
 					retArray.push("menu_IPv6");
 					retArray.push("menu_VPN");
