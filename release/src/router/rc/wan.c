@@ -666,7 +666,7 @@ void update_wan_state(char *prefix, int state, int reason)
 		unlink(tmp);
 	}
 	else if(state == WAN_STATE_CONNECTED) {
-		sprintf(tmp,"%c",prefix[3])
+		sprintf(tmp,"%c",prefix[3]);
 		run_custom_script("/usr/custom/wan-start.sh", tmp);
 	}
 
