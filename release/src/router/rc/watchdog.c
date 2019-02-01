@@ -6919,7 +6919,6 @@ void watchdog(int sig)
 		     (nvram_match("usb_path2_speed", "12") &&
 		      !nvram_match("usb_path2", "printer") && !nvram_match("usb_path2", "modem")))) {
 			_dprintf("force reset usb pwr\n");
-			stop_usb_program(1);
 			sleep(1);
 			set_pwr_usb(0);
 			sleep(3);
@@ -7230,3 +7229,5 @@ int wdg_monitor_main(int argc, char *argv[])
 	return 0;
 }
 #endif
+
+int is_usb_modem_ready(int wan_type) {return 0;}
