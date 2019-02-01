@@ -1,0 +1,96 @@
+#!/bin/sh
+
+# 目前只实现了全局代理的功能
+# By JimLee1996
+
+koolproxy_enable=$(nvram get koolproxy_enable)
+koolproxy_video_enable=$(nvram get koolproxy_video_enable)
+koolproxy_https_enable=$(nvram get koolproxy_https_enable)
+
+kp_bin="http://koolproxy-bin.b0.upaiyun.com/arm"
+kp_rule="http://kprules.b0.upaiyun.com/koolproxy.txt"
+kp_daily="http://kprules.b0.upaiyun.com/daily.txt"
+kp_video="http://kprules.b0.upaiyun.com/kp.dat"
+
+
+
+if [ $koolproxy_enable != "1" ];then
+    exit 0
+fi
+
+
+stop() {
+    # 清除防火墙规则
+    iptables -t nat -D PREROUTING -p tcp -j KOOLPROXY 2>/dev/null
+    iptables -t nat -F KOOLPROXY 2>/dev/null
+    iptables -t nat -X KOOLPROXY 2>/dev/null
+
+    # 结束进程
+    killall -9 koolproxy 2>/dev/null
+}
+
+
+start() {
+    # 避免重复启动
+    i1=`ps -w|grep koolproxy|grep -v grep|wc -l`
+    i2=`netstat -naut|grep ":3000"|grep "LISTEN"|grep -v grep|wc -l`
+    if [ $i1 != 0 -o $i2 != 0 ]; then
+        stop
+        sleep 2
+    fi
+
+    # 启动koolproxy
+    /tmp/koolproxy/koolproxy -d
+
+    # 生成代理规则
+    iptables -t nat -N KOOLPROXY 2>/dev/null
+    iptables -t nat -F KOOLPROXY 2>/dev/null
+
+    # 忽略特殊IP段
+    iptables -t nat -A KOOLPROXY -d 192.168.0.0/16 -j RETURN
+    iptables -t nat -A KOOLPROXY -d 10.0.0.0/8 -j RETURN
+    iptables -t nat -A KOOLPROXY -d 0.0.0.0/8 -j RETURN
+    iptables -t nat -A KOOLPROXY -d 127.0.0.0/8 -j RETURN
+    iptables -t nat -A KOOLPROXY -d 224.0.0.0/4 -j RETURN
+
+    # 端口映射
+    iptables -t nat -A KOOLPROXY -p tcp --dport 80 -j REDIRECT --to-ports 3000 2>/dev/null
+    if [ $koolproxy_https_enable = "1" ];then
+        #/usr/sbin/koolproxy -b /tmp --cert  2>/dev/null
+        iptables -t nat -A KOOLPROXY -p tcp --dport 443 -j REDIRECT --to-ports 3000 2>/dev/null
+    fi
+
+    # 启用链路
+    iptables -t nat -A PREROUTING -p tcp -j KOOLPROXY 2>/dev/null
+}
+
+
+restart() {
+    stop
+    sleep 2
+    start
+}
+
+check_rules() {
+    if [ $koolproxy_video_enable = "1" ];then
+        sed -i '1s/1/0/g;2s/1/0/g' /tmp/koolproxy/data/source.list
+    fi
+}
+
+prepare() {
+    wget $kp_bin -o /tmp/koolproxy/koolproxy
+    chmod +x /tmp/koolproxy/koolproxy
+    wget $kp_video -o /tmp/koolproxy/data/rules/kp.dat
+    if [ $koolproxy_video_enable != "1" ];then
+        wget $kp_rule -o /tmp/koolproxy/data/rules/koolproxy.txt
+        wget $kp_daily -o /tmp/koolproxy/data/rules/daily.txt
+    fi
+}
+
+
+sleep 5
+tar zxf /usr/custom/koolproxy.tgz -C /tmp
+check_rules
+prepaer
+sleep 5
+restart
