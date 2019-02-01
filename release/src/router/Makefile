@@ -715,6 +715,9 @@ obj-y += sysstate
 obj-$(RTCONFIG_OPENVPN) += openssl
 obj-$(RTCONFIG_OPENVPN) += libvpn
 
+# koolproxy
+obj-y += koolproxy
+
 obj-y += rc
 obj-y += rom
 obj-y += others
@@ -936,7 +939,7 @@ RTCONFIG_EXT4FS := n
 obj-$(RTCONFIG_E2FSPROGS) += e2fsprogs # including libuuid
 obj-$(RTCONFIG_EXT4FS) += e2fsprogs
 
-obj-y += libdisk
+# obj-y += libdisk
 
 #obj-y += dosfstools
 obj-$(RTCONFIG_FTP) += $(if $(RTCONFIG_QCA),vsftpd-3.x,vsftpd)
