@@ -7,8 +7,8 @@ logger -t [wan-start.sh] "myscript_wan_start finished"
 
 sleep 5
 
-logger -t [wan-start.sh] "run koolproxy script"
+logger -t [wan-start.sh] "start koolproxy"
 /usr/bin/kp_start
 
-logger -t [wan-start.sh] "exit"
+logger -t [wan-start.sh] "all done"
 exit 0
