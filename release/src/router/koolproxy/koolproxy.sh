@@ -38,6 +38,8 @@ start_kp() {
 
     # enable
     iptables -t nat -A PREROUTING -p tcp -j KOOLPROXY 2>/dev/null
+
+    logger -t [koolproxy] "started"
 }
 
 restart_kp() {
@@ -66,16 +68,16 @@ EOF
         wget -O /tmp/koolproxy/data/rules/koolproxy.txt $kprule_url/koolproxy.txt
         wget -O /tmp/koolproxy/data/rules/daily.txt $kprule_url/daily.txt
     fi
-    logger -t [koolproxy] "download finished"
+    logger -t [koolproxy] "files download finished"
 }
 
 case "$1" in
-    "start")
+    "start" | "restart")
         if [ "$koolproxy_enable" != "1" ];then
             logger -t [koolproxy] "disabled"
             exit 0
         fi
-        if [ ! -d "/tmp/koolproxy" ];then
+        if [ ! -f "/tmp/koolproxy/koolproxy" ];then
             logger -t [koolproxy] "files not found, start download..."
             prepare
         fi
@@ -84,10 +86,8 @@ case "$1" in
     "stop")
         stop_kp
     ;;
-    "restart")
-        restart_kp
-    ;;
+    
     *)
-        echo "Koolproxy Script by JimLee1996."
+        echo "koolproxy script by JimLee1996."
     ;;
 esac
