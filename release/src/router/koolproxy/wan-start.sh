@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sleep 30
+
 logger -t [wan-start.sh] "run myscript_wan_start in nvram"
 myscript_wan_start=$(nvram get myscript_wan_start)
 ($myscript_wan_start)
