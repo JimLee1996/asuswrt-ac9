@@ -1,0 +1,6 @@
+#!/bin/sh
+
+nvram set koolproxy_enable=1
+nvram set koolproxy_video_only=1
+nvram commit
+exit 0

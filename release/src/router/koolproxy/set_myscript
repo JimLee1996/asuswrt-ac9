@@ -1,0 +1,11 @@
+#!/bin/sh
+
+myscript=$*
+
+if [ ! "$myscript" ];then
+	nvram set myscript_wan_start="logger -t [myscript] Hello World!"
+else
+	nvram set myscript_wan_start="$myscript"
+fi
+nvram commit
+exit 0

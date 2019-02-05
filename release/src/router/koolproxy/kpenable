@@ -1,0 +1,5 @@
+#!/bin/sh
+
+nvram set koolproxy_enable=1
+nvram commit
+exit 0
