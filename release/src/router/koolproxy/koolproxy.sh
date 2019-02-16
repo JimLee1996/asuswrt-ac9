@@ -39,6 +39,7 @@ start_kp() {
     # enable
     iptables -t nat -A PREROUTING -p tcp -j KOOLPROXY 2>/dev/null
 
+    sleep 2
     logger -t [koolproxy] "started"
 }
 
